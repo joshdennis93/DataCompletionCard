@@ -1,0 +1,27 @@
+<template>
+    <template if:true={fields}>
+        <div if:true={showProgress} class="slds-grid slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_4-of-5">
+                <lightning-progress-bar value={progressValue} variant="base" size="small"></lightning-progress-bar>
+            </div>
+            <div class="slds-m-left_small slds-col slds-size_1-of-5">{progressValue}% complete</div>
+        </div>
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="11">
+                <lightning-record-edit-form record-id={record.Id} object-api-name={object} onsubmit={handleSuccess}>
+                    <lightning-messages>
+                    </lightning-messages>
+                    <template if:true={fields} for:each={fields} for:item="field">
+                        <lightning-input-field if:true={field} key={field} field-name={field}></lightning-input-field>
+                    </template>
+                    <lightning-button class="slds-m-top_small slds-align_absolute-center" variant="brand"
+                        type="submit" name="update" label="Update"></lightning-button>
+                </lightning-record-edit-form>
+            </lightning-layout-item>
+            <lightning-layout-item size="1"></lightning-layout-item>
+        </lightning-layout>
+    </template>
+    <template if:false={fields}>
+        <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+    </template>
+</template>

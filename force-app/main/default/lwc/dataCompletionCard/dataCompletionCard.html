@@ -1,0 +1,55 @@
+<template>
+    <!-- TODO:
+            error handling
+    -->
+    <template if:true={recordData}>
+        <lightning-card title={cardTitle}>
+            <lightning-accordion allow-multiple-sections-open active-section-name={defaultOpenSection}>
+                <template for:each={recordData} for:item="record" for:index="i">
+                    <lightning-accordion-section name={record.Name} label={record.Name} key={record.Id} if:true={hasStdName}>
+                        <!-- ugly workaround alert! If the record is a Service Cloud object, it doesn't have a Name field. This means my 'hardcoded' label={record.Name}
+                             will not work for those objects.. -->
+                        <lightning-button
+                            label="Open record"
+                            slot="actions"
+                            data-id={record.Id}
+                            onclick={handleClick}>
+                        </lightning-button>
+                        <c-data-completion-card-item
+                            if:true={fieldAPINames}
+                            record={record}
+                            object={fromObject}
+                            fields={fieldAPINames}
+                            onsuccess={handleManualRefresh}
+                            ui-attributes={recordUIAttributes}
+                            index={i}>
+                        </c-data-completion-card-item>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name={record.CaseNumber} label={record.CaseNumber} key={record.Id} if:true={hasCaseNumber}>
+                        <!-- ..and I am not sure how to dynamically set this, unlike what you could do quite easily with expressions in Aura..
+                             For now, if this needs to be used for e.g. a Work Order or Service Appointment, you will need to change {record.CaseNumber} with the appropriate field
+                             https://salesforce.stackexchange.com/questions/244460/expression-functions-for-lightning-web-components -->
+                        <lightning-button
+                            label="Open record"
+                            slot="actions"
+                            data-id={record.Id}
+                            onclick={handleClick}>
+                        </lightning-button>
+                        <c-data-completion-card-item
+                            if:true={fieldAPINames}
+                            record={record}
+                            object={fromObject}
+                            fields={fieldAPINames}
+                            onsuccess={handleManualRefresh}
+                            ui-attributes={recordUIAttributes}
+                            index={i}>
+                        </c-data-completion-card-item>
+                    </lightning-accordion-section>
+                </template>
+            </lightning-accordion>
+        </lightning-card>
+    </template>
+    <template if:false={recordData}>
+        <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+    </template>
+</template>

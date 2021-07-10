@@ -1,0 +1,8 @@
+.progress-ring {
+    transform: scale(5) translate(1em,1em);
+    position: absolute
+}
+
+.no-overflow {
+    overflow-wrap: break-word;
+}
